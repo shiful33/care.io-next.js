@@ -1,57 +1,57 @@
-# Hero Kidzz - Project Assets
-<img src="assets/hero.png">
-## Overview
+🛡️ CareService - Professional Service Management System
+CareService হলো একটি মডার্ন সার্ভিস বুকিং প্ল্যাটফর্ম, যা ইউজারদের বিভিন্ন ক্যাটাগরির সার্ভিস এক্সপ্লোর করতে এবং সহজেই বুকিং করতে সাহায্য করে। এটি Next.js এবং MongoDB দিয়ে তৈরি করা হয়েছে, যেখানে পারফরম্যান্স এবং ইউজার এক্সপেরিয়েন্সকে (UX) সর্বোচ্চ গুরুত্ব দেওয়া হয়েছে।
 
-Hero Kidzz is a small, single-vendor e-commerce web application designed for selling children's products. This repository contains all project assets including images, icons, and media files.
+🚀 Key Features
+Sequential Loading System: ইউজার রিটেনশন বাড়ানোর জন্য আমরা উন্নত Spinner ➡️ Skeleton Loader ➡️ Data সিকুয়েন্স ব্যবহার করেছি।
 
-## Features
+Dynamic Service Showcase: হোম পেজ এবং অল-সার্ভিস পেজে ক্যাটাগরি ভিত্তিক ডাইনামিক সার্ভিস কার্ড।
 
-- 🛍️ **Product Catalog** - Browse children's toys and accessories
-- 🛒 **Shopping Cart** - Add and manage items
-- 💳 **Easy Checkout** - Safe payment processing
-- 📦 **Order Invoice** - Monitor shipments
-- 👤 **User Accounts** - Save preferences and history
-- 🎨 **Responsive Design** - Mobile-friendly interface
-- ⭐ **Product Reviews** - Customer feedback system
+Rich Product Details: প্রতিটি সার্ভিসের জন্য আলাদা ডিটেইলস পেজ যেখানে ডিসকাউন্ট ক্যালকুলেশন, স্পেসিফিকেশন এবং Q&A সেকশন রয়েছে।
 
-## Starter packages
-```
-npm install react-icons mongodb bcryptjs
-```
+Smart Booking System: ইউজাররা তাদের পছন্দের সার্ভিস সরাসরি ডাটাবেজে (MongoDB) "Booking List"-এ যোগ করতে পারে।
 
-## Colors
+Responsive UI: Tailwind CSS এবং DaisyUI ব্যবহার করে সম্পূর্ণ মোবাইল-ফ্রেন্ডলি ডিজাইন নিশ্চিত করা হয়েছে।
 
-```
- /* Brand */
-  --color-primary: oklch(65% 0.23 35);
-  --color-secondary: oklch(58% 0.18 30);
-  --color-accent: oklch(72% 0.20 55);
+Custom Error Handling: প্রফেশনাল ৪-৪ (Not Found) এবং গ্লোবাল এরর পেজ সেটআপ করা হয়েছে।
 
-  /* Base */
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(97% 0.01 95);
-  --color-base-300: oklch(92% 0.015 95);
+🛠️ Tech Stack
+Frontend: Next.js 15
+ (App Router), Tailwind CSS
+, DaisyUI
+.
 
-  /* Neutral */
-  --color-neutral: oklch(35% 0.01 260);
-  --color-neutral-content: oklch(96% 0 0);
+Icons: React Icons (Fa, Io).
 
-  /* Feedback */
-  --color-success: oklch(70% 0.17 145);
-  --color-error: oklch(62% 0.24 28);
-```
+Backend: Next.js API Routes.
 
-## Getting Started
+Database: MongoDB
+.
 
-1. Clone the repository
-2. Extract assets to your project directory
-3. Reference images in your application
+State Management: React Hooks (useState, useEffect).
 
-## Contributing
+Authentication: Firebase (Coming Soon).
 
-Follow project guidelines when adding new assets.
+📁 Project Structure (Current Progress)
+Bash
 
-## License
+├── src
+│   ├── app
+│   │   ├── api/bookings      # API for managing service bookings
+│   │   ├── service/[id]      # Dynamic route for service details
+│   │   ├── my-bookings       # User's booking list dashboard
+│   │   ├── not-found.js      # Custom 404 page
+│   │   └── error.js          # Global error handler
+│   ├── components
+│   │   ├── view-details      # ViewDetails logic & UI
+│   │   ├── cards             # Reusable CareCard components
+│   │   └── loader            # Custom Spinner & Skeleton components
+│   └── lib
+│       └── dbConnect.js      # MongoDB connection helper
+⚙️ Upcoming Updates
+[ ] Firebase Auth: Email/Password & Google Login.
 
-All assets are proprietary to Hero Kidzz.
-# Hero-Kidz-assets
+[ ] User Profile: NID Verification & Profile Image Upload.
+
+[ ] Payment Integration: SSLCommerz or Stripe for checkout.
+
+[ ] Admin Dashboard: To manage services and booking status.
