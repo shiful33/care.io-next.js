@@ -1,0 +1,306 @@
+[
+  {
+    "title": "Professional Newborn Baby Sitting",
+    "category": "Baby Care",
+    "image": "https://i.ibb.co.com/xt4V4PvK/imgg1.jpg",
+    "price_per_hour": 500,
+    "discount": 5,
+    "sizes": ["Hourly", "Daily", "Weekly"],
+    "color": [],
+    "description": "Our Professional Newborn Baby Sitting service provides specialized care for infants. Our caregivers are trained in neonatal handling, feeding schedules, and sleep monitoring. We ensure your baby stays in a safe, hygienic, and nurturing environment while you are away. This service focuses on building a gentle routine for the newborn and peace of mind for parents.",
+    "qna": [
+      {
+        "question": "Are the sitters trained for emergencies?",
+        "answer": "Yes, all our sitters are certified in infant CPR and first aid."
+      },
+      {
+        "question": "Can I request a specific feeding schedule?",
+        "answer": "Absolutely, we strictly follow the routine provided by parents."
+      }
+    ],
+    "reviews": 45,
+    "sold": 120,
+    "ratings": 4.9,
+    "info": [
+      "Specialized for infants 0-12 months",
+      "Certified in infant First Aid",
+      "Hygiene focused care",
+      "Regular activity updates to parents"
+    ]
+  },
+  {
+    "title": "Toddler Play & Learn Companion",
+    "category": "Baby Care",
+    "image": "https://i.ibb.co.com/5WnSJyRH/imgg2.jpg",
+    "price_per_hour": 400,
+    "discount": 10,
+    "sizes": ["Hourly", "Full Day"],
+    "color": [],
+    "description": "This service is designed for active toddlers who need engagement and supervision. Our caregivers facilitate age-appropriate educational games, storytelling, and outdoor playtime. We focus on both safety and cognitive development through play-based learning methods.",
+    "qna": [
+      {
+        "question": "Do you provide educational materials?",
+        "answer": "We use the toys and books available at your home to maintain familiarity."
+      }
+    ],
+    "reviews": 32,
+    "sold": 85,
+    "ratings": 4.7,
+    "info": [
+      "Focus on cognitive play",
+      "Mealtime assistance included",
+      "Safe outdoor supervision",
+      "Age group: 1-4 years"
+    ]
+  },
+  {
+    "title": "Compassionate Elderly Companionship",
+    "category": "Elderly Care",
+    "image": "https://i.ibb.co.com/5hsshVHF/imgg3.jpg",
+    "price_per_hour": 450,
+    "discount": 0,
+    "sizes": ["Day Shift", "Night Shift", "24 Hours"],
+    "color": [],
+    "description": "Elderly individuals often need a companion to talk to and assist with daily movements. Our caregivers provide emotional support, engage in conversations, help with walking, and assist in light daily tasks to ensure the seniors don't feel lonely.",
+    "qna": [
+      {
+        "question": "Do they help with medication?",
+        "answer": "Yes, they provide timely reminders for all prescribed medicines."
+      }
+    ],
+    "reviews": 58,
+    "sold": 150,
+    "ratings": 4.8,
+    "info": [
+      "Emotional support and conversation",
+      "Mobility assistance",
+      "Medicine reminders",
+      "Light housekeeping included"
+    ]
+  },
+  {
+    "title": "Post-Hospitalization Sick Care",
+    "category": "Sick Care",
+    "image": "https://i.ibb.co.com/VczbCvkW/imgg4.jpg",
+    "price_per_hour": 700,
+    "discount": 15,
+    "sizes": ["Per Day", "Per Week"],
+    "color": [],
+    "description": "Recovering from surgery or a major illness requires professional attention. This service offers dedicated care for patients who need wound dressing reminders, vital sign monitoring, and specialized diet management under medical guidelines.",
+    "qna": [
+      {
+        "question": "Is this service available for COVID patients?",
+        "answer": "Yes, we have specialized caregivers with PPE for contagious care."
+      }
+    ],
+    "reviews": 21,
+    "sold": 40,
+    "ratings": 4.5,
+    "info": [
+      "Vital sign monitoring",
+      "Dietary management",
+      "Wound care assistance",
+      "Coordination with doctors"
+    ]
+  },
+  {
+    "title": "Dementia & Alzheimer’s Support",
+    "category": "Elderly Care",
+    "image": "https://i.ibb.co.com/b52QPKyh/imgg5.jpg",
+    "price_per_hour": 600,
+    "discount": 5,
+    "sizes": ["Full Time"],
+    "color": [],
+    "description": "Caring for patients with memory loss requires patience and skill. Our caregivers are trained specifically to handle the behavioral changes and safety needs of seniors with Dementia and Alzheimer’s.",
+    "qna": [
+      {
+        "question": "Are your staff trained for memory care?",
+        "answer": "Yes, they undergo specific behavioral management training."
+      }
+    ],
+    "reviews": 15,
+    "sold": 25,
+    "ratings": 4.9,
+    "info": [
+      "Safety-first approach",
+      "Memory exercises",
+      "Patience-led caregiving",
+      "24/7 supervision available"
+    ]
+  },
+  {
+    "title": "School Pickup & After-School Care",
+    "category": "Baby Care",
+    "image": "https://i.ibb.co.com/BhTm567/imgg6.jpg",
+    "price_per_hour": 350,
+    "discount": 0,
+    "sizes": ["Hourly"],
+    "color": [],
+    "description": "Busy parents can rely on us for safe school pickups and supervised after-school activities. We ensure the child finishes their homework and has a healthy snack until the parents return home.",
+    "qna": [
+      {
+        "question": "Do you provide transportation?",
+        "answer": "We can accompany the child in your vehicle or use verified ride-sharing."
+      }
+    ],
+    "reviews": 60,
+    "sold": 210,
+    "ratings": 4.6,
+    "info": [
+      "Safe school commute",
+      "Homework assistance",
+      "Afternoon snack prep",
+      "Reliable and punctual"
+    ]
+  },
+  {
+    "title": "Overnight Newborn Care",
+    "category": "Baby Care",
+    "image": "https://i.ibb.co.com/QLwfLKF/imgg7.jpg",
+    "price_per_hour": 800,
+    "discount": 10,
+    "sizes": ["Night Shift"],
+    "color": [],
+    "description": "Get the sleep you need while our night-nanny takes care of the baby. We handle midnight feedings, diaper changes, and soothing, so parents can wake up refreshed.",
+    "qna": [
+      {
+        "question": "What are the timings for night shifts?",
+        "answer": "Usually from 10 PM to 6 AM, but it can be customized."
+      }
+    ],
+    "reviews": 25,
+    "sold": 55,
+    "ratings": 5.0,
+    "info": [
+      "Expert night soothing",
+      "Feeding and burping",
+      "Parental rest support",
+      "Strict safety protocols"
+    ]
+  },
+  {
+    "title": "Stroke Recovery Assistance",
+    "category": "Sick Care",
+    "image": "https://i.ibb.co.com/Qjr0vspZ/imgg8.jpg",
+    "price_per_hour": 650,
+    "discount": 5,
+    "sizes": ["Daily", "Weekly"],
+    "color": [],
+    "description": "Post-stroke care involves physical therapy support and speech practice. Our caregivers help patients follow their rehabilitation exercises and manage daily living activities safely.",
+    "qna": [
+      {
+        "question": "Do they provide physiotherapy?",
+        "answer": "They assist with exercises prescribed by your physiotherapist."
+      }
+    ],
+    "reviews": 12,
+    "sold": 30,
+    "ratings": 4.4,
+    "info": [
+      "Rehabilitation support",
+      "Feeding assistance",
+      "Fall prevention",
+      "Mobility training"
+    ]
+  },
+  {
+    "title": "Elderly Palliative Care",
+    "category": "Elderly Care",
+    "image": "https://i.ibb.co.com/Zzr0SZnk/imgg9.jpg",
+    "price_per_hour": 900,
+    "discount": 20,
+    "sizes": ["24 Hours"],
+    "color": [],
+    "description": "Providing comfort and quality of life for seniors with serious, chronic illnesses. This service focuses on pain management support and emotional comfort for both the patient and the family.",
+    "qna": [
+      {
+        "question": "Is this medical or non-medical?",
+        "answer": "We provide non-medical comfort care and work alongside your medical team."
+      }
+    ],
+    "reviews": 18,
+    "sold": 45,
+    "ratings": 4.8,
+    "info": [
+      "Pain management reminders",
+      "Psychological support",
+      "Family counseling",
+      "Comfort-focused care"
+    ]
+  },
+  {
+    "title": "Special Needs Child Care",
+    "category": "Baby Care",
+    "image": "https://i.ibb.co.com/wr7JYBvw/imgg10.jpg",
+    "price_per_hour": 750,
+    "discount": 0,
+    "sizes": ["Hourly", "Daily"],
+    "color": [],
+    "description": "Carefully selected sitters for children with Autism, ADHD, or other physical disabilities. We focus on sensory-friendly interaction and maintaining the child's specific routine.",
+    "qna": [
+      {
+        "question": "Are the caregivers specialized?",
+        "answer": "Yes, we assign staff with experience in special education or therapy."
+      }
+    ],
+    "reviews": 29,
+    "sold": 62,
+    "ratings": 4.9,
+    "info": [
+      "Sensory-aware approach",
+      "Routine consistency",
+      "Patient and kind staff",
+      "Behavioral support"
+    ]
+  },
+  {
+    "title": "Short-term Post-Surgery Care",
+    "category": "Sick Care",
+    "image": "https://i.ibb.co.com/0pM5WctD/imgg11.jpg",
+    "price_per_hour": 550,
+    "discount": 5,
+    "sizes": ["Daily"],
+    "color": [],
+    "description": "Ideal for patients recovering from minor surgeries who need help for 3-7 days. We assist with bathing, dressing, and moving around the house safely.",
+    "qna": [
+      {
+        "question": "Can I book for just 2 days?",
+        "answer": "Yes, short-term booking is available for this service."
+      }
+    ],
+    "reviews": 40,
+    "sold": 110,
+    "ratings": 4.7,
+    "info": [
+      "Bathing and hygiene",
+      "Dressing assistance",
+      "Light meal prep",
+      "Safe indoor movement"
+    ]
+  },
+  {
+    "title": "Elderly Exercise & Yoga Companion",
+    "category": "Elderly Care",
+    "image": "https://i.ibb.co.com/N2MDwMRJ/imgg12.jpg",
+    "price_per_hour": 450,
+    "discount": 0,
+    "sizes": ["Hourly"],
+    "color": [],
+    "description": "Physical activity is vital for seniors. Our active caregivers accompany seniors during morning walks or help them perform light yoga and stretching exercises at home.",
+    "qna": [
+      {
+        "question": "Is the caregiver a yoga teacher?",
+        "answer": "They are fitness companions trained in basic elderly exercises."
+      }
+    ],
+    "reviews": 22,
+    "sold": 75,
+    "ratings": 4.6,
+    "info": [
+      "Morning walk companion",
+      "Light yoga support",
+      "Posture monitoring",
+      "Active lifestyle motivation"
+    ]
+  }
+]
