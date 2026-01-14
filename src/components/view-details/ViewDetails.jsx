@@ -1,17 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   FaStar,
   FaCheckCircle,
   FaQuestionCircle,
   FaArrowLeft,
+  FaMapMarkerAlt,
+  FaClock,
 } from "react-icons/fa";
 import { TbBrandBooking } from "react-icons/tb";
 import Link from "next/link";
+import { AuthContext } from "@/src/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const ViewDetails = ({ service }) => {
+  const { user } = useContext(AuthContext);
   const router = useRouter();
+
+  // States for Booking Form
+  const [duration, setDuration] = useState(1);
+  const [address, setAddress] = useState("");
+  const [area, setArea] = useState("");
+  const [city, setCity] = useState("");
+
   const [showSpinner, setShowSpinner] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(false);
 
@@ -33,14 +45,22 @@ const ViewDetails = ({ service }) => {
     }
   }, [service]);
 
+  // Price Calculation
+  const hourlyPrice = Number(service?.price_per_hour) || 0;
+  const discountedPrice = Number(service?.discount) || 0;
+  const unitPrice = hourlyPrice - (hourlyPrice * discountedPrice) / 100;
+  const totalPrice = unitPrice * duration;
 
-  const handleAddToBooking = async () => {
+  const handleConfirmBooking = async (e) => {
+    e.preventDefault();
+
     const bookingData = {
-      serviceId: service._id,
-      serviceName: service.title,
-      serviceImage: service.image,
+      serviceId: service?._id,
+      serviceName: service?.title,
+      serviceImage: service?.image,
       price: discountedPrice,
-      userEmail: "user@example.com",
+      userEmail: user?.email,
+      userName: user?.displayName,
       status: "pending",
       bookingDate: new Date().toISOString(),
     };
@@ -55,6 +75,13 @@ const ViewDetails = ({ service }) => {
       });
 
       if (res.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Booked Successfully!",
+          text: "Service has been added to your booking list.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         router.push("/my-bookings");
       } else {
         alert("Failed to add booking. Please try again.");
@@ -102,13 +129,18 @@ const ViewDetails = ({ service }) => {
   }
 
   const {
-    title, image, category, price_per_hour, discount,
-    sizes, ratings, reviews, info, qna = [], description,
+    title,
+    image,
+    category,
+    price_per_hour,
+    discount,
+    sizes,
+    ratings,
+    reviews,
+    info,
+    qna = [],
+    description,
   } = service;
-
-  const hourlyPrice = Number(price_per_hour) || 0;
-  const discountAmount = Number(discount) || 0;
-  const discountedPrice = hourlyPrice - (hourlyPrice * discountAmount) / 100;
 
   return (
     <div className="container px-4 py-10 mx-auto mb-20 font-inter">
@@ -135,27 +167,43 @@ const ViewDetails = ({ service }) => {
             <h3 className="mb-4 text-2xl font-bold font-poppins text-primary">
               Service Description
             </h3>
-            <p className="text-lg leading-relaxed text-gray-700">{description}</p>
+            <p className="text-lg leading-relaxed text-gray-700">
+              {description}
+            </p>
           </div>
         </div>
 
         <div className="space-y-6">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold badge badge-outline badge-primary">{category}</span>
-            <h1 className="text-2xl font-bold leading-tight md:text-3xl font-poppins">{title}</h1>
+            <span className="font-semibold badge badge-outline badge-primary">
+              {category}
+            </span>
+            <h1 className="text-2xl font-bold leading-tight md:text-3xl font-poppins">
+              {title}
+            </h1>
           </div>
 
           <div className="flex items-center gap-6 py-2 border-gray-200 border-y">
             <div className="flex items-center gap-2 text-xl font-bold text-orange-500">
               <FaStar /> <span>{ratings}</span>
             </div>
-            <div className="font-medium text-gray-500">({reviews} Customer Reviews)</div>
+            <div className="font-medium text-gray-500">
+              ({reviews} Customer Reviews)
+            </div>
           </div>
 
           <div className="flex items-baseline gap-4">
-            <span className="text-4xl font-black text-primary">৳{discountedPrice}</span>
-            {discount > 0 && <span className="text-xl text-gray-400 line-through">৳{price_per_hour}</span>}
-            <span className="text-lg text-gray-500">/ per {sizes?.[0] || "session"}</span>
+            <span className="text-4xl font-black text-primary">
+              ৳{discountedPrice}
+            </span>
+            {discount > 0 && (
+              <span className="text-xl text-gray-400 line-through">
+                ৳{price_per_hour}
+              </span>
+            )}
+            <span className="text-lg text-gray-500">
+              / per {sizes?.[0] || "session"}
+            </span>
           </div>
 
           <div className="space-y-3">
@@ -184,14 +232,106 @@ const ViewDetails = ({ service }) => {
             </div>
           </div>
 
+          {/* Main Action Button */}
           <div className="pt-6">
-            <button 
-              onClick={handleAddToBooking}
-              className="flex items-center gap-3 px-12 py-2 text-white transition-transform bg-green-300 border rounded-md shadow-xl cursor-pointer btn-lg md:w-auto hover:scale-105 hover:bg-green-400"
+            <button
+              onClick={() =>
+                document.getElementById("booking-modal").showModal()
+              }
+              className="lg:flex justify-center items-center w-full py-1 text-[17px] font-semibold border rounded cursor-pointer text-primary hover:text-secondary border-red-300 gap-2"
             >
-              <TbBrandBooking size={20} /> Add to Booking List
+              <TbBrandBooking size={24} /> Book This Service Now
             </button>
           </div>
+
+          {/* --- Dynamic Booking Modal --- */}
+          <dialog
+            id="booking-modal"
+            className="modal modal-bottom sm:modal-middle"
+          >
+            <div className="max-w-2xl p-8 modal-box bg-base-100">
+              <h3 className="pb-2 mb-4 text-2xl font-bold border-b text-primary">
+                Complete Your Booking
+              </h3>
+
+              <form onSubmit={handleConfirmBooking} className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {/* Duration Field */}
+                  <div className="form-control">
+                    <label className="mb-2 font-semibold label">
+                      <FaClock className="mr-2" /> Duration (Hours)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      className="px-4 border border-red-300 rounded-md input hover:border-none"
+                      required
+                    />
+                  </div>
+
+                  {/* City/Division */}
+                  <div className="form-control">
+                    <label className="mb-2 font-semibold label">
+                      <FaMapMarkerAlt className="mr-2" /> City / Division
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Dhaka"
+                      onChange={(e) => setCity(e.target.value)}
+                      className="pl-4 border border-red-300 rounded-md input hover:border-none"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-control">
+                  <label className="mb-2 font-semibold text-gray-600 label">
+                    Full Address
+                  </label>
+                  <textarea
+                    placeholder="House No, Road No, Area..."
+                    className="w-full h-20 pl-4 border border-red-300 rounded-md"
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                  ></textarea>
+                </div>
+
+                {/* Total Cost Breakdown */}
+                <div className="p-4 mt-4 border border-blue-200 rounded-lg bg-blue-50">
+                  <div className="flex justify-between text-lg">
+                    <span>Unit Price:</span> <span>৳{unitPrice}</span>
+                  </div>
+                  <div className="flex justify-between text-lg">
+                    <span>Duration:</span> <span>{duration} hr(s)</span>
+                  </div>
+                  <hr className="my-2 border-blue-300" />
+                  <div className="flex justify-between text-xl font-bold text-primary">
+                    <span>Total Cost:</span> <span>৳{totalPrice}</span>
+                  </div>
+                </div>
+
+                <div className="modal-action">
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() =>
+                      document.getElementById("booking-modal").close()
+                    }
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-1 text-[17px] font-semibold border rounded cursor-pointer text-primary hover:text-secondary border-red-300 gap-2"
+                  >
+                    Confirm Booking
+                  </button>
+                </div>
+              </form>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

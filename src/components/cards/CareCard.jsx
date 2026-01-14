@@ -1,13 +1,49 @@
+"use client";
+import React, { useContext } from "react";
+import { AuthContext } from "@/src/providers/AuthProvider";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { FaStar, FaShoppingCart, FaInfoCircle } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const CareCard = ({ service }) => {
-  console.log("Service Data:", service);
-  const { title, category, image, price_per_hour, discount, reviews, ratings } =
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
+
+  const { _id, title, category, image, price_per_hour, discount, reviews, ratings } =
     service;
 
-  const discountedPrice = price_per_hour - (price_per_hour * discount) / 100;
+  // Discount price calculation
+  const hourlyPrice = Number(price_per_hour) || 0;
+  const discountAmount = Number(discount) || 0;
+  const discountedPrice = hourlyPrice - (hourlyPrice * discountAmount) / 100;
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const handleAccess = (path) => {
+    if (!user) {
+      Toast.fire({
+        icon: "warning",
+        title: "Please login first to continue!",
+      });
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+    } else {
+      router.push(path);
+    }
+  };
 
   return (
     <div className="p-6 mb-20 transition-shadow border border-gray-100 shadow-md card bg-base-100 hover:shadow-lg">
@@ -61,15 +97,19 @@ const CareCard = ({ service }) => {
         {/* Action Buttons */}
         <div className="flex justify-between w-full gap-2 mt-4 card-actions">
           {/* View Details Button */}
-          <Link href={`/service/${service._id}`} className="flex-1">
-            <button className="w-full btn btn-primary btn-sm text-[#538301] font-semibold border rounded-md hover:bg-green-300 hover:text-white custom-text-shadow flex items-center justify-center gap-1">
-              <FaInfoCircle />
-              <span className="whitespace-nowrap">View Details</span>
-            </button>
-          </Link>
+          <button
+            onClick={() => handleAccess(`/service/${_id}`)}
+            className="w-full btn btn-primary btn-sm text-[#538301] font-semibold border rounded-md hover:bg-green-300 hover:text-white custom-text-shadow flex items-center justify-center gap-1 flex-1"
+          >
+            <FaInfoCircle />
+            <span className="whitespace-nowrap">View Details</span>
+          </button>
 
           {/* Add to Cart Button */}
-          <button className="flex items-center justify-center flex-1 w-full gap-1 font-semibold border rounded-md btn btn-primary btn-sm text-secondary hover:bg-red-300 hover:text-white custom-text-shadow">
+          <button
+            onClick={() => handleAccess(`/service/${_id}`)}
+            className="flex items-center justify-center flex-1 w-full gap-1 font-semibold border rounded-md btn btn-primary btn-sm text-secondary hover:bg-red-300 hover:text-white custom-text-shadow"
+          >
             <FaShoppingCart />
             <span className="whitespace-nowrap">Add to Cart</span>
           </button>

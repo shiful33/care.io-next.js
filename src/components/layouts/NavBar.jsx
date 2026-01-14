@@ -1,76 +1,109 @@
-import React from "react";
-import Logo from "./Logo";
-import NavLink from "../buttons/NavLink";
+"use client";
+import React, { useContext } from "react";
 import Link from "next/link";
-import { BsCart3 } from "react-icons/bs";
+import { AuthContext } from "@/src/providers/AuthProvider";
+import Logo from "./Logo";
 
-const NavBar = () => {
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
 
-    const nav = <>
+  const navLinks = (
+    <>
       <li>
-        <NavLink href={"/"}>Home</NavLink>
+        <Link href="/">Home</Link>
       </li>
-
       <li>
-        <NavLink href={"/all-services"}>All Services</NavLink>
+        <Link href="/all-services">All Services</Link>
       </li>
-
-      <li>
-        <NavLink href={"/about-us"}>About Us</NavLink>
-      </li>
-
-      <li>
-        <NavLink href={"/booking-service"}>Booking Service</NavLink>
-      </li>
+      {user && (
+        <li>
+          <Link href="/my-bookings">My Bookings</Link>
+        </li>
+      )}
     </>
+  );
 
   return (
-    <div>
-      <div className="navbar bg-base-100">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
-              </svg>
-            </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow custom-text-shadow text-lg"
-            > 
-              {nav}
-            </ul>
-          </div>
-          <Logo />
-        </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 space-x-4 custom-text-shadow text-lg">
-            {nav}
+    <div className="navbar bg-base-100/95 backdrop-blur-md sticky top-0 z-[100] shadow-md w-full px-4 md:px-16">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </label>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-semibold"
+          >
+            {navLinks}
           </ul>
         </div>
-        <div className="navbar-end flex gap-4 ">
-          <Link href={"/cart"} className="text-2xl text-primary hover:text-secondary" >
-            <BsCart3 />
+        <Logo />
+      </div>
+
+      <div className="hidden navbar-center lg:flex">
+        <ul className="gap-2 px-1 text-[17px] font-semibold menu menu-horizontal">
+          {navLinks}
+        </ul>
+      </div>
+
+      <div className="gap-4 navbar-end">
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <label
+              tabIndex={0}
+              className="border-2 btn btn-ghost btn-circle avatar border-primary"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  src={
+                    user?.photoURL ||
+                    "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                  }
+                  alt="profile"
+                />
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li className="px-4 py-2 mb-2 font-bold truncate border-b text-secondary">
+                {user?.displayName}
+              </li>
+              <li>
+                <Link href="/profile">Profile</Link>
+              </li>
+              <li>
+                <button onClick={logout} className="font-bold text-red-500">
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="px-8 text-white rounded-full btn btn-primary"
+          >
+            Login
           </Link>
-          <Link href={"/login"}>
-            <button className="px-4 py-1 border border-white bg-green-300 text-white rounded font-bold cursor-pointer transition-all duration-300 custom-text-shadow hover:bg-green-400">Login</button>
-          </Link>
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default NavBar;
+export default Navbar;

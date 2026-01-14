@@ -7,7 +7,7 @@ const Logo = () => {
         <Link href={"/"}>
            <div className='flex items-center'>
             <Image alt='logo' src={"/assets/logo.png"} width={100} height={100} />
-           <h2 className='text-3xl font-bold text-[#98CA43] custom-text-shadow'>Care<span className='text-primary'>.IO</span></h2>
+           <h2 className='text-3xl font-bold text-[#98CA43] custom-text-shadow'>CARE<span className='text-primary'>.IO</span></h2>
            </div>
         </Link>
     );
