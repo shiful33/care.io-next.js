@@ -6,8 +6,11 @@ export async function DELETE(req, { params }) {
   try {
     const { id } = await params;
 
-    const bookingsCollection = await dbConnect("bookings");
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+    }
 
+    const bookingsCollection = await dbConnect("bookings");
     const query = { _id: new ObjectId(id) };
     const result = await bookingsCollection.deleteOne(query);
 
@@ -18,25 +21,26 @@ export async function DELETE(req, { params }) {
       );
     } else {
       return NextResponse.json(
-        { message: "No booking found with this ID" },
+        { message: "No booking found" },
         { status: 404 }
       );
     }
   } catch (error) {
-    console.error("Delete API Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
 export async function PATCH(req, { params }) {
   try {
     const { id } = await params;
-    const { status } = await req.json();
-    const bookingsCollection = await dbConnect("bookings");
+    const body = await req.json();
+    const status = body.status;
 
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+    }
+
+    const bookingsCollection = await dbConnect("bookings");
     const result = await bookingsCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: { status: status } }
