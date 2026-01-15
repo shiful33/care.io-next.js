@@ -9,7 +9,7 @@ const CareService = () => {
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  
+
   // Loading States
   const [showSpinner, setShowSpinner] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -25,7 +25,7 @@ const CareService = () => {
           setServices(data);
           setFilteredServices(data);
         }
-        
+
         // Loading experience
         setTimeout(() => {
           setShowSpinner(false);
@@ -45,22 +45,26 @@ const CareService = () => {
 
   // Filter Logic (Search + Category)
   useEffect(() => {
-    let result = services;
+    if (services.length > 0) {
+      let result = services;
 
-    // Category base filtering
-    if (activeCategory !== "All") {
-      result = result.filter((s) => s.category === activeCategory);
+      // Category base filtering
+      if (activeCategory !== "All") {
+        result = result.filter(
+          (s) => s.category?.toLowerCase() === activeCategory.toLowerCase()
+        );
+      }
+
+      // Search query base filtering
+      if (searchQuery) {
+        result = result.filter((s) =>
+          s.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      setFilteredServices(result);
     }
-
-    // Search query base filtering
-    if (searchQuery) {
-      result = result.filter((s) =>
-        s.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setFilteredServices(result);
-  }, [searchQuery, activeCategory, services]);
+  }, [activeCategory, searchQuery, services]);
 
   // Spinner UI
   if (showSpinner) {
@@ -84,7 +88,10 @@ const CareService = () => {
         <div className="w-64 h-10 mx-auto mb-10 bg-gray-200 rounded animate-pulse"></div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(8)].map((_, index) => (
-            <div key={index} className="flex flex-col w-full gap-4 animate-pulse">
+            <div
+              key={index}
+              className="flex flex-col w-full gap-4 animate-pulse"
+            >
               <div className="w-full bg-gray-200 h-52 rounded-xl"></div>
               <div className="h-4 bg-gray-200 rounded w-28"></div>
               <div className="w-full h-4 bg-gray-200 rounded"></div>
@@ -99,13 +106,16 @@ const CareService = () => {
   return (
     <div className="container px-4 mx-auto mb-20">
       <div className="my-10 text-center">
-        <h2 className="mb-2 text-3xl font-bold text-secondary">Our Top Services</h2>
-        <p className="text-gray-500">Find the perfect care service for your family</p>
+        <h2 className="mb-2 text-3xl font-bold text-secondary">
+          Our Top Services
+        </h2>
+        <p className="text-gray-500">
+          Find the perfect care service for your family
+        </p>
       </div>
 
       {/* --- Search & Filter Bar --- */}
       <div className="flex flex-col items-center justify-between gap-6 p-6 mb-12 bg-gray-100 border border-red-200 shadow-md md:flex-row rounded-2xl">
-        
         {/* Search Input */}
         <div className="relative w-full md:w-80">
           <input
@@ -125,7 +135,9 @@ const CareService = () => {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`btn btn-sm rounded-full px-5 ${
-                activeCategory === cat ? "btn-primary text-gray-600" : "btn-outline btn-ghost"
+                activeCategory === cat
+                  ? "btn-primary text-gray-600"
+                  : "btn-outline btn-ghost"
               }`}
             >
               {cat}
@@ -136,17 +148,18 @@ const CareService = () => {
 
       {/* --- Service Grid --- */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filteredServices.length > 0 ? (
-          filteredServices.slice(0, 8).map((service) => (
-            <CareCard key={service._id} service={service} />
-          ))
-        ) : (
-          <div className="py-20 text-center border-2 border-dashed col-span-full bg-gray-50 rounded-xl">
-             <p className="text-xl font-semibold text-gray-400">
-               No services found in this category or search!
-             </p>
-          </div>
-        )}
+        {filteredServices.length > 0
+          ? filteredServices
+              .slice(0, 8)
+              .map((service) => (
+                <CareCard key={service._id} service={service} />
+              ))
+          : !showSpinner &&
+            !showSkeleton && (
+              <p className="text-center col-span-full">
+                No services found in this category or search!
+              </p>
+            )}
       </div>
     </div>
   );
