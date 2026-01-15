@@ -1,30 +1,80 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { FaTrash, FaCheckCircle, FaClock } from "react-icons/fa";
+import React, { useEffect, useState, useContext } from "react";
+import { FaTrash, FaCheckCircle, FaClock, FaCreditCard } from "react-icons/fa";
 import Link from "next/link";
+import { AuthContext } from "@/src/providers/AuthProvider";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import Image from "next/image";
 
 const MyBookingsPage = () => {
+  const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Booking fetch from database
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const res = await fetch("/api/bookings");
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          setBookings(data);
-        }
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      } finally {
-        setLoading(false);
+  const fetchBookings = async () => {
+    try {
+      const res = await fetch("/api/bookings");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        const myData = data.filter((item) => item.userEmail === user?.email);
+        setBookings(myData);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBookings();
-  }, []);
+  useEffect(() => {
+    if (user?.email) {
+      fetchBookings();
+    }
+  }, [user]);
+
+  // ১. Pay Now
+  const handlePay = () => {
+    Swal.fire({
+      title: "Payment Gateway",
+      text: "Online payment system is coming soon! Please pay cash after service.",
+      icon: "info",
+      confirmButtonColor: "#2563eb",
+    });
+  };
+
+  // Delete Booking Function
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel this booking?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/api/bookings/${id}`, {
+            method: "DELETE",
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            toast.success("Booking cancelled!");
+            setBookings((prev) => prev.filter((item) => item._id !== id));
+          } else {
+            toast.error(data.error || "Failed to delete");
+          }
+        } catch (error) {
+          console.error("Delete error:", error);
+          toast.error("Something went wrong!");
+        }
+      }
+    });
+  };
 
   if (loading) {
     return (
@@ -36,21 +86,25 @@ const MyBookingsPage = () => {
 
   return (
     <div className="container min-h-screen px-4 py-12 mx-auto">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold text-secondary">My Booking List</h1>
-        <p className="text-gray-500">
-          Manage your selected services and track their status.
-        </p>
+      <div className="mb-10 flex justify-between items-end">
+        <div>
+          <h1 className="text-3xl font-bold text-secondary">My Booking List</h1>
+          <p className="text-gray-500">
+            Manage your care services and track status.
+          </p>
+        </div>
+        <div className="badge badge-primary p-4 gap-2 font-bold">
+          Total Bookings: {bookings.length}
+        </div>
       </div>
 
       {bookings.length > 0 ? (
         <div className="overflow-x-auto border border-gray-100 shadow-2xl bg-base-100 rounded-2xl">
           <table className="table w-full">
-            {/* Table Head */}
             <thead className="text-white bg-primary">
               <tr className="">
-                <th className="px-4 py-2 rounded-tl-2xl">Service</th>
-                <th>Price</th>
+                <th className="px-6 py-4 rounded-tl-2xl">Service</th>
+                <th>Total Bill</th>
                 <th>Booking Date</th>
                 <th>Status</th>
                 <th className="text-center rounded-tr-2xl">Action</th>
@@ -60,51 +114,58 @@ const MyBookingsPage = () => {
               {bookings.map((booking) => (
                 <tr
                   key={booking._id}
-                  className="transition-colors hover:bg-gray-50"
+                  className="transition-colors hover:bg-gray-50 border-b border-red-100 p-2"
                 >
                   <td>
-                    <div className="flex items-center gap-4 px-4 py-2">
-                      <div className="avatar">
-                        <div className="bg-gray-100 mask mask-squircle w-14 h-14">
-                          <img
+                    <div className="flex items-center gap-4 p-3">
+                      <div className="">
+                        <div className="w-12 h-8 shadow-md rounded">
+                          <Image
                             src={booking.serviceImage}
                             alt={booking.serviceName}
+                            width={550} 
+                            height={350}
+                            priority
                           />
                         </div>
                       </div>
                       <div>
-                        <div className="text-lg font-bold">
-                          {booking.serviceName}
-                        </div>
-                        <div className="text-sm opacity-60">
-                          ID: {booking.serviceId.slice(-6)}
+                        <div className="font-bold">{booking.serviceName}</div>
+                        <div className="text-xs opacity-50">
+                          {booking.duration} session
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="text-lg font-bold text-primary">
-                    ৳{booking.price}
-                  </td>
+                  <td className="font-bold text-primary">৳{booking.price}</td>
                   <td>{new Date(booking.bookingDate).toLocaleDateString()}</td>
                   <td>
-                    <div
-                      className={`badge badge-ghost gap-2 py-3 px-4 ${
+                    <span
+                      className={`badge font-semibold py-3 px-4 ${
                         booking.status === "pending"
-                          ? "text-orange-500"
-                          : "text-green-500"
+                          ? "badge-warning"
+                          : "badge-success"
                       }`}
                     >
                       {booking.status === "pending" ? (
-                        <FaClock />
+                        <FaClock className="mr-2" />
                       ) : (
-                        <FaCheckCircle />
+                        <FaCheckCircle className="mr-2" />
                       )}
                       {booking.status}
-                    </div>
+                    </span>
                   </td>
-                  <th className="text-center">
-                    <button className="text-red-500 btn btn-ghost btn-md hover:bg-red-50">
-                      <FaTrash size={20} />
+                  <th className="text-center space-x-2">
+                    <button
+                    onClick={handlePay}
+                    className="btn btn-sm btn-outline btn-success gap-2">
+                      <FaCreditCard size={14} /> Pay
+                    </button>
+                    <button
+                      onClick={() => handleDelete(booking._id)}
+                      className="btn btn-sm btn-ghost text-red-500 hover:bg-red-50"
+                    >
+                      <FaTrash size={16} />
                     </button>
                   </th>
                 </tr>
@@ -115,32 +176,11 @@ const MyBookingsPage = () => {
       ) : (
         <div className="py-20 text-center border-2 border-dashed bg-gray-50 rounded-3xl">
           <h2 className="text-2xl font-semibold text-gray-400">
-            Your booking list is empty!
+            No active bookings found!
           </h2>
           <Link href="/" className="px-10 mt-6 btn btn-primary">
             Explore Services
           </Link>
-        </div>
-      )}
-
-      {/* Summary Section */}
-      {bookings.length > 0 && (
-        <div className="flex justify-end mt-10">
-          <div className="border shadow-xl stats">
-            <div className="px-10 stat">
-              <div className="text-lg font-bold stat-title text-secondary">
-                Total Amount
-              </div>
-              <div className="stat-value text-primary">
-                ৳{bookings.reduce((sum, item) => sum + item.price, 0)}
-              </div>
-              <div className="stat-actions">
-                <button className="mt-4 btn btn-primary btn-block">
-                  Checkout All
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       )}
     </div>

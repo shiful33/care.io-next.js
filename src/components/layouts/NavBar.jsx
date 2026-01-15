@@ -3,23 +3,50 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { AuthContext } from "@/src/providers/AuthProvider";
 import Logo from "./Logo";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const pathname = usePathname();
+
+  // Admin Email
+  const isAdmin = user?.email === "admin@care.io.com";
+
+  const isActive = (path) => pathname === path;
+
+  const activeStyle = "text-primary font-bold border-b-2 border-primary pb-1";
+  const normalStyle = "text-gray-600 hover:text-primary transition-all";
 
   const navLinks = (
     <>
       <li>
-        <Link href="/">Home</Link>
+        <Link href="/"
+        className={isActive("/") ? activeStyle : normalStyle}
+        >Home</Link>
       </li>
       <li>
-        <Link href="/all-services">All Services</Link>
+        <Link href="/all-services"
+        className={isActive("/all-services") ? activeStyle : normalStyle}
+        >All Services</Link>
       </li>
       {user && (
         <li>
-          <Link href="/my-bookings">My Bookings</Link>
+          <Link href="/my-bookings"
+          className={isActive("/my-bookings") ? activeStyle : normalStyle}
+          >My Bookings</Link>
         </li>
       )}
+
+      {isAdmin && (
+      <li>
+        <Link 
+          href="/admin-dashboard" 
+          className={isActive("/admin-dashboard") ? activeStyle : normalStyle}
+        >
+          Admin Dashboard
+        </Link>
+      </li>
+    )}
     </>
   );
 
