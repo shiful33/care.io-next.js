@@ -18,13 +18,16 @@ const CareService = () => {
 
   // Data fetching
   useEffect(() => {
-    fetch("/api/services")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setServices(data);
-          setFilteredServices(data);
-        }
+    fetch("/api/services") 
+    .then((res) => {
+      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
+    })
+    .then((data) => {
+      if (Array.isArray(data)) {
+        setServices(data);
+        setFilteredServices(data);
+      }
 
         // Loading experience
         setTimeout(() => {
