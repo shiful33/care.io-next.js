@@ -1,57 +1,50 @@
-🛡️ CareService - Professional Service Management System
-CareService হলো একটি মডার্ন সার্ভিস বুকিং প্ল্যাটফর্ম, যা ইউজারদের বিভিন্ন ক্যাটাগরির সার্ভিস এক্সপ্লোর করতে এবং সহজেই বুকিং করতে সাহায্য করে। এটি Next.js এবং MongoDB দিয়ে তৈরি করা হয়েছে, যেখানে পারফরম্যান্স এবং ইউজার এক্সপেরিয়েন্সকে (UX) সর্বোচ্চ গুরুত্ব দেওয়া হয়েছে।
+🛡️ Care-IO | Professional Caregiving Service Marketplace
+
+Care-IO is a robust, full-stack web application built with Next.js. It connects users with professional caregivers for various services like nursing, elderly care, and babysitting. The platform features a seamless booking flow, automated email invoicing, and a dedicated admin management system.
 
 🚀 Key Features
-Sequential Loading System: ইউজার রিটেনশন বাড়ানোর জন্য আমরা উন্নত Spinner ➡️ Skeleton Loader ➡️ Data সিকুয়েন্স ব্যবহার করেছি।
+👤 For Users
+Service Exploration: 
+Browse through a wide range of caregiving categories with detailed pricing and info.
 
-Dynamic Service Showcase: হোম পেজ এবং অল-সার্ভিস পেজে ক্যাটাগরি ভিত্তিক ডাইনামিক সার্ভিস কার্ড।
+Dynamic Booking System: 
+Interactive booking modal that calculates total costs based on duration and hourly rates.
 
-Rich Product Details: প্রতিটি সার্ভিসের জন্য আলাদা ডিটেইলস পেজ যেখানে ডিসকাউন্ট ক্যালকুলেশন, স্পেসিফিকেশন এবং Q&A সেকশন রয়েছে।
+Automated Invoicing: 
+Receive an immediate HTML-formatted email invoice upon successful booking via Nodemailer.
 
-Smart Booking System: ইউজাররা তাদের পছন্দের সার্ভিস সরাসরি ডাটাবেজে (MongoDB) "Booking List"-এ যোগ করতে পারে।
+My Bookings Dashboard: 
+A personal space for users to track their booking status (Pending/Confirmed) and cancel orders if needed.
 
-Responsive UI: Tailwind CSS এবং DaisyUI ব্যবহার করে সম্পূর্ণ মোবাইল-ফ্রেন্ডলি ডিজাইন নিশ্চিত করা হয়েছে।
+🛡️ For AdminsComprehensive Oversight: 
+Access to all bookings made across the platform.
 
-Custom Error Handling: প্রফেশনাল ৪-৪ (Not Found) এবং গ্লোবাল এরর পেজ সেটআপ করা হয়েছে।
+Real-time Status Management: 
+Update service status from Pending to Confirmed, Completed, or Cancelled via a dedicated dashboard.
 
-🛠️ Tech Stack
-Frontend: Next.js 15
- (App Router), Tailwind CSS
-, DaisyUI
-.
+Secure Access: 
+Role-based access control ensuring only authorized admins can reach the dashboard.
 
-Icons: React Icons (Fa, Io).
+🛠️ Technology StackLayer TechnologyFrontendNext.
+js (App Router), Tailwind CSS, Daisy UIBackendNext.
 
-Backend: Next.js API Routes.
+js API Routes (Serverless Functions)DatabaseMongoDB AtlasAuthenticationFirebase AuthenticationEmailingNodemailer (SMTP Integration)FeedbackSweetAlert2, React Hot Toast
 
-Database: MongoDB
-.
+🔐 Admin Demo CredentialsTo test the administrative features, use the following account:Email: admin@care.io.comPassword: Admin@123
 
-State Management: React Hooks (useState, useEffect).
+⚙️ Local Installation
+Clone the repository:
+Bash: git clone https://github.com/your-username/care-io.git
 
-Authentication: Firebase (Coming Soon).
+Install dependencies:
+Bashnpm install
+Setup Environment Variables:Create a .env.local file in the root directory:
+Code snippetMONGODB_URI=your_mongodb_connection_string
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=your_app_specific_password
 
-📁 Project Structure (Current Progress)
-Bash
+Run the development server:
+Bash: npm run dev
 
-├── src
-│   ├── app
-│   │   ├── api/bookings      # API for managing service bookings
-│   │   ├── service/[id]      # Dynamic route for service details
-│   │   ├── my-bookings       # User's booking list dashboard
-│   │   ├── not-found.js      # Custom 404 page
-│   │   └── error.js          # Global error handler
-│   ├── components
-│   │   ├── view-details      # ViewDetails logic & UI
-│   │   ├── cards             # Reusable CareCard components
-│   │   └── loader            # Custom Spinner & Skeleton components
-│   └── lib
-│       └── dbConnect.js      # MongoDB connection helper
-⚙️ Upcoming Updates
-[ ] Firebase Auth: Email/Password & Google Login.
-
-[ ] User Profile: NID Verification & Profile Image Upload.
-
-[ ] Payment Integration: SSLCommerz or Stripe for checkout.
-
-[ ] Admin Dashboard: To manage services and booking status.
+🌐 Deployment
+This project is optimized for deployment on Vercel. Ensure all Environment Variables are configured in the Vercel dashboard to enable database and email functionality.
