@@ -13,6 +13,7 @@ import Link from "next/link";
 import { AuthContext } from "@/src/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const ViewDetails = ({ service }) => {
   const { user } = useContext(AuthContext);
@@ -58,9 +59,14 @@ const ViewDetails = ({ service }) => {
       serviceId: service?._id,
       serviceName: service?.title,
       serviceImage: service?.image,
-      price: discountedPrice,
+      price: totalPrice,
+      duration: `${duration} Hours`,
       userEmail: user?.email,
       userName: user?.displayName,
+      location: {
+        address: address,
+        city: city,
+      },
       status: "pending",
       bookingDate: new Date().toISOString(),
     };
@@ -74,20 +80,25 @@ const ViewDetails = ({ service }) => {
         body: JSON.stringify(bookingData),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
         Swal.fire({
           icon: "success",
           title: "Booked Successfully!",
-          text: "Service has been added to your booking list.",
+          text: "An invoice has been sent to your email.",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 2000,
         });
+        document.getElementById("booking-modal").close();
         router.push("/my-bookings");
       } else {
-        alert("Failed to add booking. Please try again.");
+        console.error("Server Error:", data.error);
+        toast.error(data.error || "Failed to add booking.");
       }
     } catch (err) {
       console.error("Booking error:", err);
+      toast.error("Something went wrong with the server.");
     }
   };
 
@@ -279,6 +290,7 @@ const ViewDetails = ({ service }) => {
                     <input
                       type="text"
                       placeholder="e.g. Dhaka"
+                      value={city}
                       onChange={(e) => setCity(e.target.value)}
                       className="pl-4 border border-red-300 rounded-md input hover:border-none"
                       required
@@ -292,6 +304,7 @@ const ViewDetails = ({ service }) => {
                   </label>
                   <textarea
                     placeholder="House No, Road No, Area..."
+                    value={address}
                     className="w-full h-20 pl-4 border border-red-300 rounded-md"
                     onChange={(e) => setAddress(e.target.value)}
                     required

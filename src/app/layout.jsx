@@ -3,6 +3,8 @@ import Navbar from "../components/layouts/NavBar";
 import Footer from "../components/layouts/Footer";
 import { Inter, Poppins } from 'next/font/google';
 import AuthProvider from "@/src/providers/AuthProvider";
+import TopToDown from "../components/layouts/TopToDown";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,6 +21,9 @@ const inter = Inter({
 export const metadata = {
   title: "Care.io",
   description: "A web application that allows users to access reliable and trusted care services for children, the elderly or sick people.",
+  openGraph: {
+    images: ["/banner-og-image.jpg"],
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -31,8 +36,10 @@ export default function RootLayout({ children }) {
           <main className="py-2 md:w-11/12 mx-auto min-h-[calc(100vh-302px)]">
             {children}
           </main>
+          <TopToDown />
           <Footer /> 
         </AuthProvider>
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );

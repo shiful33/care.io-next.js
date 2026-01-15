@@ -1,26 +1,36 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CareCard from "../cards/CareCard";
+import { FaSearch } from "react-icons/fa";
 
 const CareService = () => {
+  // States
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+  
+  // Loading States
   const [showSpinner, setShowSpinner] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(false);
 
+  const categories = ["All", "Baby Care", "Elderly Care", "Sick People Care"];
+
+  // Data fetching
   useEffect(() => {
     fetch("http://localhost:3000/api/services")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
           setServices(data);
+          setFilteredServices(data);
         }
-
-
+        
+        // Loading experience
         setTimeout(() => {
           setShowSpinner(false);
           setShowSkeleton(true);
         }, 800);
-
 
         setTimeout(() => {
           setShowSkeleton(false);
@@ -33,7 +43,26 @@ const CareService = () => {
       });
   }, []);
 
+  // Filter Logic (Search + Category)
+  useEffect(() => {
+    let result = services;
 
+    // Category base filtering
+    if (activeCategory !== "All") {
+      result = result.filter((s) => s.category === activeCategory);
+    }
+
+    // Search query base filtering
+    if (searchQuery) {
+      result = result.filter((s) =>
+        s.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredServices(result);
+  }, [searchQuery, activeCategory, services]);
+
+  // Spinner UI
   if (showSpinner) {
     return (
       <div className="flex flex-col items-center justify-center my-40 space-y-4">
@@ -48,17 +77,14 @@ const CareService = () => {
     );
   }
 
-
+  // Skeleton UI
   if (showSkeleton) {
     return (
       <div className="container px-4 mx-auto my-20">
         <div className="w-64 h-10 mx-auto mb-10 bg-gray-200 rounded animate-pulse"></div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(8)].map((_, index) => (
-            <div
-              key={index}
-              className="flex flex-col w-full gap-4 animate-pulse"
-            >
+            <div key={index} className="flex flex-col w-full gap-4 animate-pulse">
               <div className="w-full bg-gray-200 h-52 rounded-xl"></div>
               <div className="h-4 bg-gray-200 rounded w-28"></div>
               <div className="w-full h-4 bg-gray-200 rounded"></div>
@@ -70,24 +96,56 @@ const CareService = () => {
     );
   }
 
-
   return (
-    <div className="container px-4 mx-auto">
-      <div className="my-20 text-center">
-        <h2 className="text-2xl font-bold md:text-3xl text-secondary">
-          Our Service Categories
-        </h2>
+    <div className="container px-4 mx-auto mb-20">
+      <div className="my-10 text-center">
+        <h2 className="mb-2 text-3xl font-bold text-secondary">Our Top Services</h2>
+        <p className="text-gray-500">Find the perfect care service for your family</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4">
-        {services.length > 0 ? (
-          services
-            .slice(0, 8)
-            .map((service) => <CareCard key={service._id} service={service} />)
+      {/* --- Search & Filter Bar --- */}
+      <div className="flex flex-col items-center justify-between gap-6 p-6 mb-12 bg-gray-100 border border-red-200 shadow-md md:flex-row rounded-2xl">
+        
+        {/* Search Input */}
+        <div className="relative w-full md:w-80">
+          <input
+            type="text"
+            placeholder="Search service..."
+            className="w-full pl-12 bg-white rounded-md shadow input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <FaSearch className="absolute text-gray-400 -translate-y-1/2 left-4 top-1/2" />
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`btn btn-sm rounded-full px-5 ${
+                activeCategory === cat ? "btn-primary text-gray-600" : "btn-outline btn-ghost"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* --- Service Grid --- */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredServices.length > 0 ? (
+          filteredServices.slice(0, 8).map((service) => (
+            <CareCard key={service._id} service={service} />
+          ))
         ) : (
-          <p className="font-bold text-center text-red-400 col-span-full">
-            No data found in Database!
-          </p>
+          <div className="py-20 text-center border-2 border-dashed col-span-full bg-gray-50 rounded-xl">
+             <p className="text-xl font-semibold text-gray-400">
+               No services found in this category or search!
+             </p>
+          </div>
         )}
       </div>
     </div>
