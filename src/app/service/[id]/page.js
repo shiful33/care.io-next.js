@@ -1,6 +1,6 @@
 export async function generateMetadata({ params }) {
   const id = params.id;
-  const res = await fetch(`http://localhost:3000/api/services/${id}`);
+  const res = await fetch(`https://care-io-next-js.vercel.app/api/services/${id}`);
   const service = await res.json();
 
   return {

@@ -16,25 +16,21 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ১. নতুন ইউজার তৈরি (Registration)
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // ২. লগইন (Login)
   const loginUser = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // ৩. গুগল লগইন (Google Login)
   const googleLogin = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // ৪. প্রোফাইল আপডেট (Name/Photo)
   const updateUserProfile = (name, photo) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -42,13 +38,11 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  // ৫. লগআউট (Logout)
   const logout = () => {
     setLoading(true);
     return signOut(auth);
   };
 
-  // ইউজার আছে কি নেই তা ট্র্যাক করা
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
