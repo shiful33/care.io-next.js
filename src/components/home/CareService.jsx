@@ -18,7 +18,7 @@ const CareService = () => {
 
   // Data fetching
   useEffect(() => {
-    fetch("https://care-io-next-js.vercel.app/api/services")
+    fetch("/api/services")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
