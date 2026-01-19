@@ -13,19 +13,30 @@ const MyBookingsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchBookings = async () => {
-    try {
-      const res = await fetch("/api/bookings");
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        const myData = data.filter((item) => item.userEmail === user?.email);
-        setBookings(myData);
-      }
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+    const res = await fetch("/api/bookings");
+    const data = await res.json();
+    
+    console.log("Full Data from DB:", data);
+    console.log("Current User Email:", user?.email);
+
+    if (Array.isArray(data)) {
+      const myData = data.filter((item) => {
+        const dbEmail = item.userEmail?.toString().trim().toLowerCase();
+        const loginEmail = user?.email?.toString().trim().toLowerCase();
+        
+        return dbEmail === loginEmail;
+      });
+
+      setBookings(myData);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     if (user?.email) {
@@ -86,14 +97,14 @@ const MyBookingsPage = () => {
 
   return (
     <div className="container min-h-screen px-4 py-12 mx-auto">
-      <div className="mb-10 flex justify-between items-end">
+      <div className="flex items-end justify-between mb-10">
         <div>
           <h1 className="text-3xl font-bold text-secondary">My Booking List</h1>
           <p className="text-gray-500">
             Manage your care services and track status.
           </p>
         </div>
-        <div className="badge badge-primary p-4 gap-2 font-bold">
+        <div className="gap-2 p-4 font-bold badge badge-primary">
           Total Bookings: {bookings.length}
         </div>
       </div>
@@ -114,12 +125,12 @@ const MyBookingsPage = () => {
               {bookings.map((booking) => (
                 <tr
                   key={booking._id}
-                  className="transition-colors hover:bg-gray-50 border-b border-red-100 p-2"
+                  className="p-2 transition-colors border-b border-red-100 hover:bg-gray-50"
                 >
                   <td>
                     <div className="flex items-center gap-4 p-3">
                       <div className="">
-                        <div className="w-12 h-8 shadow-md rounded">
+                        <div className="w-12 h-8 rounded shadow-md">
                           <Image
                             src={booking.serviceImage}
                             alt={booking.serviceName}
@@ -155,15 +166,15 @@ const MyBookingsPage = () => {
                       {booking.status}
                     </span>
                   </td>
-                  <th className="text-center space-x-2">
+                  <th className="space-x-2 text-center">
                     <button
                     onClick={handlePay}
-                    className="btn btn-sm btn-outline btn-success gap-2">
+                    className="gap-2 btn btn-sm btn-outline btn-success">
                       <FaCreditCard size={14} /> Pay
                     </button>
                     <button
                       onClick={() => handleDelete(booking._id)}
-                      className="btn btn-sm btn-ghost text-red-500 hover:bg-red-50"
+                      className="text-red-500 btn btn-sm btn-ghost hover:bg-red-50"
                     >
                       <FaTrash size={16} />
                     </button>
