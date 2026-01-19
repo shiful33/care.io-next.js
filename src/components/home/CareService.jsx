@@ -18,7 +18,7 @@ const CareService = () => {
 
   // Data fetching
   useEffect(() => {
-    fetch("/api/services") 
+    fetch("https://care-io-next-js.vercel.app/api/services") 
     .then((res) => {
       if (!res.ok) throw new Error("Network response was not ok");
       return res.json();
