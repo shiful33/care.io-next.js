@@ -19,6 +19,7 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://care-io-next-js.vercel.app'),
   title: "Care.io",
   description: "A web application that allows users to access reliable and trusted care services for children, the elderly or sick people.",
   openGraph: {
